@@ -11,6 +11,7 @@
 
 from mvpa2.suite import SimpleSOMMapper# pl
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def get_feature_from_file(filename, N):
@@ -43,4 +44,4 @@ if __name__ == '__main__':
     feature_matrix = np.array(feature_list)
     som = SimpleSOMMapper((20, 20), 400, learning_rate=0.05)
     som.train()
-    pl.imshow(som.K, origin='lower')
+    plt.imshow(som.K, origin='lower')
