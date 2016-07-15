@@ -17,8 +17,8 @@ import distance
 
 if __name__ == '__main__':
     row = 200
-    som_x = 4
-    som_y = 4
+    som_x = 10
+    som_y = 10
     dimenssion = 881
     feature_file_name = "./data/chemical_data.text"
     cid, matrix = ft.get_feature_matrix_from_file(feature_file_name, row)
@@ -32,6 +32,19 @@ if __name__ == '__main__':
             print k, v
 
         code_book = bmu.update_code_book(som_x, som_y, bmus, matrix, code_book)
+
+    print "++++"
+    bmus = bmu.find_bmu(code_book, matrix)
+
+
+    for i in range(10):
+        print "===== epoch ", i, "======"
+        print distance.tanimoto.bin_tanimoto_similarity(matrix[2], code_book[2])
+        bmus = bmu.find_bmu(code_book, matrix)
+        for k, v in bmus.items():
+            print k, v
+
+        code_book = bmu.update_code_book2(som_x, som_y, bmus, matrix, code_book)
 
     print "++++"
     bmus = bmu.find_bmu(code_book, matrix)
@@ -51,14 +64,12 @@ if __name__ == '__main__':
     id = 0
     i = 0
     for v in matrix:
-        s = distance.tanimoto.bin_tanimoto_similarity(matrix[41], v)
+        s = distance.tanimoto.bin_tanimoto_similarity(matrix[99], v)
 
         if abs(s - 1) >= 0.0001 and s > max:
 
             max = s
             id = i
-
-            print id, s
 
         i += 1
 

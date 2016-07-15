@@ -90,5 +90,38 @@ def update_code_book(som_x, som_y, bums, matrix, code_book):
     return code_book
 
 
+def update_code_book2(som_x, som_y, bums, matrix, code_book):
+
+    dimession = len(matrix[0])
+
+    for i in range(len(code_book)):
+        # if i not in bums.keys():
+        #     continue
+
+        sum_vec = [0] * dimession
+        item_num = 0
+        neighbor = four_neighbor(som_x, som_y, i)
+        neighbor.append(i)
+
+        if i in bums.keys():
+            cur_bmus = bums[i]
+        else:
+            continue
+        # cur_bmus.extend(bums[i])
+
+        for k in cur_bmus:
+            vec = matrix[k]
+            item_num += 1
+            for j in range(dimession):
+                sum_vec[j] += vec[j]
+
+        for j in range(dimession):
+            if sum_vec[j] * 2 >= item_num:
+                code_book[i][j] = 1
+            else:
+                code_book[i][j] = 0
+
+    return code_book
+
 if __name__ == '__main__':
     print find_bmu([[2], [2]], [])
