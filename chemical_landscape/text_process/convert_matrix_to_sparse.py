@@ -39,4 +39,4 @@ def  convert(infilename, outfilename):
 
 
 if __name__ == '__main__':
-    convert('../chemical_data.text', 'chemical_sparse_data.text')
+    convert('./chemical_data.text', 'chemical_sparse_data2.text')
