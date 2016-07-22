@@ -14,67 +14,116 @@ import feature.init_codebook as init
 import train.bmu as bmu
 import train.cluster_similarity as cluster_similarity
 import distance
+import math
 
 if __name__ == '__main__':
-    row = 200
+    row = 5000
     som_x = 10
     som_y = 10
     dimenssion = 881
+
     feature_file_name = "./data/chemical_data.text"
     cid, matrix = ft.get_feature_matrix_from_file(feature_file_name, row)
     code_book = init.random_bin_init_codebook(som_x=som_x, som_y=som_y, dimenssion=dimenssion)
 
-    for i in range(10):
+    weight = [0] * dimenssion
+    with open('id_info.text', 'r') as fd:
+        while True:
+            line = fd.readline()
+            if not line:
+                break
+
+            id, p = line.split(':')[:2]
+            id = int(id)
+            p = float(p)
+            weight[id] = p
+
+
+    total_epoch = 10
+
+    result_pre = None
+    for i in range(total_epoch):
+      n = 0
+      while True:
+
+        n += 1
+        if n >= 10:
+            break
+
         print "===== epoch ", i, "======"
-        print distance.tanimoto.bin_tanimoto_similarity(matrix[2], code_book[2])
-        bmus = bmu.find_bmu(code_book, matrix)
+        print distance.tanimoto.importance_similarity(matrix[2], code_book[2], weight)
+        bmus = bmu.find_importance_bmu(code_book, matrix, weight)
         for k, v in bmus.items():
             print k, v
 
-        code_book = bmu.update_code_book(som_x, som_y, bmus, matrix, code_book)
+        ''' radius of neighborhood, decrease with epoch '''
+        lambda_zero = min(som_x, som_y)/2
 
-    print "++++"
-    bmus = bmu.find_bmu(code_book, matrix)
+        radius = lambda_zero * math.pow(1.0 / lambda_zero, float(i) / total_epoch) - 1
 
+        # radius = int(radius)
 
-    for i in range(10):
-        print "===== epoch ", i, "======"
-        print distance.tanimoto.bin_tanimoto_similarity(matrix[2], code_book[2])
-        bmus = bmu.find_bmu(code_book, matrix)
-        for k, v in bmus.items():
-            print k, v
+        ''' update code book '''
+        code_book = bmu.update_code_book(som_x, som_y, bmus, matrix, code_book, radius)
 
-        code_book = bmu.update_code_book2(som_x, som_y, bmus, matrix, code_book)
+        result_now = cluster_similarity.cluster_importance_similarity(matrix, bmus, code_book, weight)
+        if result_now == result_pre:
+            print "***** stable ****"
+            break
+        else:
+            result_pre = result_now
+            print "******** not stable ********"
 
-    print "++++"
-    bmus = bmu.find_bmu(code_book, matrix)
+    bmus = bmu.find_importance_bmu(code_book, matrix, weight)
+    s = cluster_similarity.cluster_importance_similarity(matrix, bmus, code_book, weight)
+
     for k, v in bmus.items():
-            print k, v
+            print k, v, s[k]
 
-    print cluster_similarity.cluster_similarity(matrix, bmus, code_book)
 
-    print distance.tanimoto.bin_tanimoto_similarity(matrix[4], matrix[48])
+    ''' average similarity of each grid '''
 
-    test_bmu  = {}
-    test_bmu[0] = range(row)
-    print test_bmu
-    print cluster_similarity.cluster_similarity(matrix, test_bmu, code_book)
+    ''' average tanimoto similarity of all feature vector '''
+    print cluster_similarity.cluster_importance_similarity(matrix, {0: range(row)}, code_book, weight)
 
-    max = 0
-    id = 0
-    i = 0
-    for v in matrix:
-        s = distance.tanimoto.bin_tanimoto_similarity(matrix[99], v)
 
-        if abs(s - 1) >= 0.0001 and s > max:
 
-            max = s
-            id = i
+    right_num = 0
+    same_cluster_num = 0
+    for k, v in bmus.items():
+        for j in v:
+            id = 0
+            dis = 0
+            for i in range(row):
+                now = distance.tanimoto.importance_similarity(matrix[i], matrix[j], weight)
 
-        i += 1
+                if now < 1 and now  > dis:
+                    dis = now
+                    id = i
 
-    print max
-    print id
+            neighbors = []
+            for c in range(som_x*som_y):
+                if c in bmus.keys() and bmu.is_neighbor(som_x, som_y, k, c, 1.5):
+                    neighbors.extend(bmus[c])
+
+            if id not in neighbors:
+                print j, id, k, neighbors
+                print "best match feature is not neighbor"
+            else:
+                print "----------"
+                right_num += 1
+
+            if id in bmus[k]:
+                same_cluster_num += 1
+
+    print row
+    print right_num
+    print same_cluster_num
+
+
+
+
+
 
 
 
