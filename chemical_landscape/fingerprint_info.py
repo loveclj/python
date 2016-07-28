@@ -33,6 +33,13 @@ def importance_of_index(p, thres=0.001):
     return -1 * math.log(v, 2)
 
 
+def idf(p, thres=2**(-10)):
+    if p < thres:
+        p = thres
+
+    return -1 * math.log(p, 2)
+
+
 if __name__ == '__main__':
 
     out_fd = open('./id_info.text', 'w')
@@ -43,9 +50,11 @@ if __name__ == '__main__':
                 break
 
             id, p, descr = line.strip('\n').split(':')[:3]
-            print id, importance_of_index(float(p)), descr
+            print id, information_in_bit(float(p)), descr
 
+            # importance = str(information_in_bit(float(p)))
             importance = str(importance_of_index(float(p)))
+            # importance = str(idf(float(p)))
             line = id + ':' + importance + ":" + descr + '\n'
             out_fd.write(line)
 
