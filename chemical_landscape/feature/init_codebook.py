@@ -11,6 +11,7 @@
 
 
 import random
+import numpy as np
 
 
 def random_bin_init_codebook(som_x, som_y, dimenssion, threshold=0.5):
@@ -26,7 +27,7 @@ def random_bin_init_codebook(som_x, som_y, dimenssion, threshold=0.5):
 
         code_book.append(vec)
 
-    return code_book
+    return np.array(code_book)
 
 
 if __name__ == '__main__':

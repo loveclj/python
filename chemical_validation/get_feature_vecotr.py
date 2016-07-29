@@ -49,6 +49,8 @@ if __name__ == '__main__':
     b = base64.decodestring(b)
     b_f = str2binary(b)
 
+
+
     c = base64.decodestring(c)
     c_f = str2binary(c)
 
@@ -81,6 +83,10 @@ if __name__ == '__main__':
     fd.write(line)
 
     fd.close()
+
+    print b_f
+    print e_f
+
 
 
 
