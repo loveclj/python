@@ -36,7 +36,7 @@ def load_weight_from_file(file_name):
 
 
 if __name__ == '__main__':
-    row = 24
+    row = 15
     som_x = 5
     som_y = 5
     dimenssion = 881
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     # feature_file_name = "chemical_data_10k"
     feature_file_name = "formula_figerprint.text"
     feature_file_name = "formula_figerprint_ali_data_set2.text"
+    feature_file_name = "formula_figerprint_ali_suger_data.text"
     cid, matrix = ft.get_feature_matrix_from_file(feature_file_name, row)
 
     code_book = init.random_bin_init_codebook(som_x=som_x, som_y=som_y, dimenssion=dimenssion)
@@ -73,7 +74,7 @@ if __name__ == '__main__':
       while True:
         print "radius is", radius
         max_train_times_per_epoch += 1
-        if max_train_times_per_epoch >= 1000:
+        if max_train_times_per_epoch >= 10:
             break
             # pass
 
@@ -139,24 +140,26 @@ if __name__ == '__main__':
 
             print i, cid[i]
 
-            label = None
-            i += 100
-            if i>= 100 and i<= 102:
-                label = "1"
-            if i>=103 and i<= 107:
-                label ="2"
-            if i>=108 and i <=110:
-                label = "3"
-            if i>=111 and i<=117:
-                label = "4"
-            if i>=118 and i<=124:
-                label = "5"
+            # label = None
+            # i += 100
+            # if i>= 100 and i<= 102:
+            #     label = "1"
+            # if i>=103 and i<= 107:
+            #     label ="2"
+            # if i>=108 and i <=110:
+            #     label = "3"
+            # if i>=111 and i<=117:
+            #     label = "4"
+            # if i>=118 and i<=124:
+            #     label = "5"
+            #
+            #
+            # if label != None:
+            #     label += "," + str(i-100)
+            #
+            # i -= 100
 
-
-            if label != None:
-                label += "," + str(i-100)
-
-            i -= 100
+            label = str(i)
 
             label_list.append(label)
 
@@ -174,7 +177,8 @@ if __name__ == '__main__':
     re_fd.close()
 
     plt.scatter(x=x_list, y=y_list, label=label_list)
-    plt.grid(b=True, color='r', linestyle='-')
+    # plt.grid(b=True, color='r', linestyle='-')
+    plt.grid(b=True)
 
     for label, x, y in zip(label_list, x_list, y_list):
         if not label:
