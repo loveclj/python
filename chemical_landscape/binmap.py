@@ -20,6 +20,7 @@ import distance.bmu
 import distance.dist
 import random
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 
 def load_weight_from_file(file_name):
@@ -53,19 +54,19 @@ if __name__ == '__main__':
     # weight = [1] * dimenssion
     # weight = np.array(weight)
 
-
-
     matrix = matrix * weight
     code_book = code_book * weight
 
 
     total_epoch = som_x
 
+    first_train = True
     result_pre = None
     for i in range(total_epoch):
 
       max_train_times_per_epoch = 0
-      radius = int(som_x/2 - i)
+      # radius = int(som_x/2 - i)
+      radius = som_x/2 - i * 0.3
 
       if radius < 0:
           break
@@ -74,20 +75,28 @@ if __name__ == '__main__':
       while True:
         print "radius is", radius
         max_train_times_per_epoch += 1
-        if max_train_times_per_epoch >= 10:
+        if max_train_times_per_epoch >= 100:
             break
             # pass
 
         print "===== epoch ", i, "======"
 
+
         bmus = distance.bmu.find_bmu(code_book, matrix)
+        # if first_train:
+        #     bmus = defaultdict(list)
+        #
+        #     for i in range(row):
+        #         bmus[i%(som_y*som_x)].append(i)
+        #
+        #     first_train = False
         # for k, v in bmus.items():
         #     print k, v
 
         ''' radius of neighborhood, decrease with epoch '''
-        lambda_zero = min(som_x, som_y)/2
+        # lambda_zero = min(som_x, som_y)/2
 
-        radius = lambda_zero * math.pow(1.0 / lambda_zero, float(i) / total_epoch) - 1
+        # radius = lambda_zero * math.pow(1.0 / lambda_zero, float(i) / total_epoch) - 1
 
         # radius = int(radius)
 
@@ -105,6 +114,7 @@ if __name__ == '__main__':
 
     bmus = distance.bmu.find_bmu(code_book, matrix)
     s = distance.dist.cluster_similarity(matrix, bmus, code_book)
+    print s
 
     for k, v in bmus.items():
             print k, v, s[k]
@@ -169,16 +179,17 @@ if __name__ == '__main__':
 
         re_fd.write('======================')
 
-    print(x_list)
-    print(y_list)
-    print "===="
-
 
     re_fd.close()
 
     plt.scatter(x=x_list, y=y_list, label=label_list)
     # plt.grid(b=True, color='r', linestyle='-')
-    plt.grid(b=True)
+    ax = plt.gca()
+    ax.set_xticks(np.linspace(0,5,6))
+    ax.set_yticks(np.linspace(0,5,6))
+    # ax.set_yticks(np.linspace(0,1,6))
+    # ax.set_yticks(range(0, 6, 1))
+    plt.grid(b=True, linestyle='-', color='r')
 
     for label, x, y in zip(label_list, x_list, y_list):
         if not label:
@@ -197,7 +208,7 @@ if __name__ == '__main__':
     ''' average similarity of each grid '''
 
     ''' average tanimoto similarity of all feature vector '''
-    # print distance.dist.cluster_similarity(matrix, {0: range(row)}, code_book)
+    print distance.dist.cluster_similarity(matrix, {0: range(row)}, code_book)
     #
     #
     #
