@@ -13,10 +13,11 @@ import random
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 
 def load_weight_from_file(file_name, dimension):
-    weight = [0] * dimension
+    weight = np.zeros(dimension)
 
     for line in open(file_name):
 
@@ -25,7 +26,7 @@ def load_weight_from_file(file_name, dimension):
             p = float(p)
             weight[id] = p
 
-    return np.array(weight)
+    return weight
 
 
 def load_data(file_name):
@@ -33,14 +34,17 @@ def load_data(file_name):
     clusters = []
     matrix = []
 
-    i = 0
-    for line in open(file_name):
-        if i == 13:
-            continue
+    feature_set = set()
 
-        i += 1
+    for line in open(file_name):
 
         s, c, m = line.strip('\n').split(',')
+
+        # if m in feature_set:
+        #     print s
+        #     continue
+        # else:
+        #     feature_set.add(m)
 
         smiles.append(s)
         clusters.append(c)
@@ -79,18 +83,19 @@ def distance_matrix(matrix, func):
     return u_matrix
 
 
-def mds(matrix, rate=0.01):
+def mds(matrix, total_epoch=1000, rate=0.01):
     u_matrix = distance_matrix(matrix, tanimoto_distance)
     row = len(matrix)
+    random.seed(1)
     loc = [[random.random(), random.random()] for i in range(row)]
     fake_distance = [[0.0 for i in range(row)] for j in range(row)]
 
     last_error = None
 
-    for m in range(1000):
+    for m in range(total_epoch):
         for i in range(row):
             for j in range(row):
-                fake_distance[i][j] = math.sqrt(sum([pow(loc[i][x] - loc[j][x], 2) for x in range(len(loc[i]))]))
+                 fake_distance[i][j] = math.sqrt(sum([pow(loc[i][x] - loc[j][x], 2) for x in range(len(loc[i]))]))
 
         grad = [[0.0, 0.0] for i in range(row)]
 
@@ -100,16 +105,33 @@ def mds(matrix, rate=0.01):
                 if i == j:
                     continue
 
-                error_term = (fake_distance[i][j] - u_matrix[i][j])/u_matrix[i][j]
+                fake_distance[i][j] = math.sqrt(sum([pow(loc[i][x] - loc[j][x], 2) for x in range(len(loc[i]))]))
+
+                # error_term = 0
+                # if fake_distance[i][j] > u_matrix[i][j]:
+                #     error_term = 1.0/(u_matrix[i][j])
+                #     # error_term = 1.0
+                # else:
+                #     error_term = -1.0/(u_matrix[i][j])
+                #     # error_term = -1.0
+
+                error_term = (fake_distance[i][j] - u_matrix[i][j])/(u_matrix[i][j] ** 2)
+                # error_term = (fake_distance[i][j] - u_matrix[i][j]) /(u_matrix[i][j])
 
                 grad[i][0] += (loc[i][0] - loc[j][0])/fake_distance[i][j] * error_term
                 grad[i][1] += (loc[i][1] - loc[j][1])/fake_distance[i][j] * error_term
 
                 total_error += abs(error_term)
 
-        for k in range(row):
-                loc[k][0] -= rate*grad[k][0]
-                loc[k][1] -= rate*grad[k][1]
+            loc[i][0] -= rate*grad[i][0]
+            loc[i][1] -= rate*grad[i][1]
+
+            if i == 2:
+                print grad[2]
+
+        # for k in range(row):
+        #         loc[k][0] -= rate*grad[k][0]
+        #         loc[k][1] -= rate*grad[k][1]
 
         print "total_error", total_error
 
@@ -129,6 +151,59 @@ def draw2d(data, label):
     plt.show()
 
 
+def hierarchicalCluster(distance_mat):
+    item_count = len(distance_mat)
+    steps = []
+    cluster_record = [[i] for i in range(item_count)]
+    mat = distance_mat
+    print mat
+    for i in range(item_count -1):
+        print "cluster num", len(distance_mat) - 1 - i
+
+        min_distance = sys.float_info.max
+        pair = (0, 0)
+        for j in range(len(mat)):
+            for k in range(j):
+                if mat[j][k] < min_distance and mat[j][k] > 0:
+                    pair = (k, j)
+                    min_distance = mat[j][k]
+
+        cluster_record[pair[0]].extend(cluster_record[pair[1]])
+
+        steps.append(pair)
+
+        merged_id = cluster_record[pair[1]][0]
+
+        for m in range(len(mat)):
+            mat[m][merged_id] = -1 * abs(mat[m][merged_id])#sys.float_info.max
+            mat[merged_id][m] = -1 * abs(mat[m][merged_id])#sys.float_info.max
+
+        cluster_record[pair[1]] = []
+
+        min = sys.float_info.max
+        '''update matrix distance '''
+        for m in range(len(mat)):
+            if not cluster_record[m]:
+                continue
+
+            dist = 0
+            n = 0
+            for x in cluster_record[m]:
+                for y in cluster_record[pair[0]]:
+                    # dist += abs(mat[x][y])
+                    # n += 1
+                    if 0 < mat[x][y] < min:
+                        min = mat[x][y]
+
+            mat[m][cluster_record[pair[0]][0]] = min #dist / n
+            mat[cluster_record[pair[0]][0]][m] = min #dist / n
+        print steps
+        print cluster_record
+
+    # print steps
+
+
+
 if __name__ == '__main__':
     smiles, clusters, matrix = load_data('data/smiles_cluster_fingerprint.text')
     print smiles
@@ -137,8 +212,17 @@ if __name__ == '__main__':
 
     dimension = 881
     weight = load_weight_from_file('./data/id_info.text', dimension)
-    matrix = matrix * dimension
+    matrix = matrix * weight
 
-    loc = mds(matrix, 0.02)
+    dis_mat = distance_matrix(matrix, tanimoto_distance)
+    hierarchicalCluster(dis_mat)
 
-    draw2d(loc, clusters)
+    # loc = mds(matrix, 1000, 0.002)
+    #
+    # label = []
+    # i = 0
+    # for c in clusters:
+    #     label.append(str(i) + ',' + c)
+    #     i += 1
+    #
+    # draw2d(loc, label)
