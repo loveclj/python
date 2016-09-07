@@ -56,27 +56,52 @@ def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, i
     fd.close()
 
 
+def get_cid_smiles_fingerprint_from_dynamodb_without_cluster(file_name, out_file_name, client, index_name):
+    fd = open(out_file_name, 'w')
+    for line in open(file_name):
+        inchi_value = line.strip('\n').strip('')
+        if not inchi_value:
+            continue
+
+        res = client.query(index_name=index_name, index=inchi_value)['Items']
+        print res
+
+        for rec in res:
+
+            line = rec['cid']['N'] + "," + rec['inchi_key']['S'] + '\n'
+            fd.write(line)
+
+    fd.close()
+
+
 
 
 if __name__ == '__main__':
     table = Table(table_name='chemical', partition_key='cid')
 
-    # get_cid_smiles_fingerprint_from_dynamodb(file_name="test_data_ali_suger.text", out_file_name='test_data_simles_ali_suger.text', client=table, index_name='inchi_key')
+    get_cid_smiles_fingerprint_from_dynamodb_without_cluster(file_name="inchi_key_for_mds_64", out_file_name='test_data_simles_MDS_64.text', client=table, index_name='inchi_key')
 
-
-    with open("../formula_figerprint_ali_suger_data.text", "w") as out_fd, open('test_data_simles_ali_suger.text', 'r') as in_fd:
-        N = 100
-        i = 0
-        while True:
-            line = in_fd.readline().strip('\n')
-            if not line:
-                break
-
-            cid, inchi_key, cluster = line.split(',')
-            # formula = table.get_item({'N': cid})['Item']["molecular_formula"]['S']
-            formula = table.get_item({'N': cid})['Item']["smiles"]['L'][0]['M']['value']['S']
-            fingerprint = table.get_item({'N': cid})['Item']["fingerprint"]['B']
-            fingerprint = str_utilties.str2binary(fingerprint)
-            line = formula + ',' + fingerprint + '\n'
-            out_fd.write(line)
-
+    # with open('test_data_MDS_64_SMILES_fingerprint.text', "w") as out_fd, open('test_data_simles_MDS_64.text', 'r') as in_fd:
+    #     N = 100
+    #     i = 0
+    #     while True:
+    #         line = in_fd.readline().strip('\n')
+    #         if not line:
+    #             break
+    #
+    #         cid, inchi_key = line.split(',')
+    #         # formula = table.get_item({'N': cid})['Item']["molecular_formula"]['S']
+    #         formula = table.get_item({'N': cid})['Item']["smiles"]['L'][0]['M']['value']['S']
+    #         fingerprint = table.get_item({'N': cid})['Item']["fingerprint"]['B']
+    #         fingerprint = str_utilties.str2binary(fingerprint)
+    #         print fingerprint
+    #         name = 'unknow'
+    #         try:
+    #             name = table.get_item({'N': cid})['Item']["names"]['M']['EN']['L'][0]['S']
+    #         except:
+    #             pass
+    #
+    #         print name
+    #         line = name + ',' + formula + ',' + fingerprint + '\n'
+    #         out_fd.write(line)
+    #

@@ -19,7 +19,7 @@ def get_feature_matrix_from_file(file_name, N):
 
     for line in open(file_name):
 
-        cid, fingerprint = line.strip('\n').split(',')
+        cid, tmp, fingerprint = line.strip('\n').split(',')
         feature = []
 
         for f in fingerprint:

@@ -58,6 +58,34 @@ def load_data(file_name):
     return smiles, clusters, matrix
 
 
+def load_data_with_name(file_name):
+    smiles = []
+    names = []
+    matrix = []
+
+    feature_set = set()
+
+    for line in open(file_name):
+
+        n, s, m = line.strip('\n').split(',')
+
+        if m in feature_set:
+            print s
+            continue
+        else:
+            feature_set.add(m)
+
+        smiles.append(s)
+        names.append(n)
+
+        vec = []
+        for e in m:
+            vec.append(int(e))
+
+        matrix.append(vec)
+
+    return names, smiles, matrix
+
 def tanimoto_distance(vec1, vec2):
     sum1 = sum(vec1)
     sum2 = sum(vec2)
@@ -97,6 +125,13 @@ def mds(matrix, total_epoch=1000, rate=0.01):
             for j in range(row):
                  fake_distance[i][j] = math.sqrt(sum([pow(loc[i][x] - loc[j][x], 2) for x in range(len(loc[i]))]))
 
+        scale = 0
+        abs_error = 0
+        for i in range(row):
+            for j in range(i, row):
+                scale += fake_distance[i][j] ** 2
+                abs_error += (fake_distance[i][j] - u_matrix[i][j]) ** 2
+
         grad = [[0.0, 0.0] for i in range(row)]
 
         total_error = 0
@@ -115,23 +150,75 @@ def mds(matrix, total_epoch=1000, rate=0.01):
                 #     error_term = -1.0/(u_matrix[i][j])
                 #     # error_term = -1.0
 
-                error_term = (fake_distance[i][j] - u_matrix[i][j])/(u_matrix[i][j] ** 2)
-                # error_term = (fake_distance[i][j] - u_matrix[i][j]) /(u_matrix[i][j])
+                # error_term = (fake_distance[i][j] - u_matrix[i][j])/(u_matrix[i][j] ** 2)
+
+
+                error_term = (fake_distance[i][j] - u_matrix[i][j]) / fake_distance[i][j] * scale - abs_error
+
+                grad[i][0] += (loc[i][0] - loc[j][0]) * error_term
+                grad[i][1] += (loc[i][1] - loc[j][1]) * error_term
+
+                total_error += abs(error_term)
+
+            # loc[i][0] -= rate*grad[i][0]
+            # loc[i][1] -= rate*grad[i][1]
+
+            # if i == 2:
+            #     print grad[2]
+
+        for k in range(row):
+                loc[k][0] -= rate*grad[k][0]/(scale ** 2)
+                loc[k][1] -= rate*grad[k][1]/(scale ** 2)
+
+        print "total_error", total_error
+
+    return loc
+
+
+def mds_origin(matrix, total_epoch=1000, rate=0.01):
+    u_matrix = distance_matrix(matrix, tanimoto_distance)
+    row = len(matrix)
+    random.seed(1)
+    loc = [[random.random(), random.random()] for i in range(row)]
+    fake_distance = [[0.0 for i in range(row)] for j in range(row)]
+
+    last_error = None
+
+    for m in range(total_epoch):
+        for i in range(row):
+            for j in range(row):
+                 fake_distance[i][j] = math.sqrt(sum([pow(loc[i][x] - loc[j][x], 2) for x in range(len(loc[i]))]))
+
+        grad = [[0.0, 0.0] for i in range(row)]
+
+        total_error = 0
+        for i in range(row):
+            for j in range(row):
+                if i == j:
+                    continue
+
+
+                # error_term = 0
+                # if fake_distance[i][j] > u_matrix[i][j]:
+                #     error_term = 1.0/(u_matrix[i][j])
+                #     # error_term = 1.0
+                # else:
+                #     error_term = -1.0/(u_matrix[i][j])
+                #     # error_term = -1.0
+
+                error_term = (fake_distance[i][j] - u_matrix[i][j])#/(u_matrix[i][j])
 
                 grad[i][0] += (loc[i][0] - loc[j][0])/fake_distance[i][j] * error_term
                 grad[i][1] += (loc[i][1] - loc[j][1])/fake_distance[i][j] * error_term
 
                 total_error += abs(error_term)
 
-            loc[i][0] -= rate*grad[i][0]
-            loc[i][1] -= rate*grad[i][1]
+            # loc[i][0] -= rate*grad[i][0]
+            # loc[i][1] -= rate*grad[i][1]
 
-            if i == 2:
-                print grad[2]
-
-        # for k in range(row):
-        #         loc[k][0] -= rate*grad[k][0]
-        #         loc[k][1] -= rate*grad[k][1]
+        for k in range(row):
+                loc[k][0] -= rate*grad[k][0]
+                loc[k][1] -= rate*grad[k][1]
 
         print "total_error", total_error
 
@@ -144,9 +231,9 @@ def draw2d(data, label):
     plt.scatter(x=x_list, y=y_list)
 
     for label, x, y in zip(label, x_list, y_list):
-        plt.annotate(label, xy = (x, y), xytext = (-20, 20),
+        plt.annotate(label, xy = (x, y), xytext = (-10, 10),
                      textcoords = 'offset points', ha = 'right',
-                     va = 'bottom',bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+                     va = 'bottom',bbox = dict(boxstyle = 'round,pad=0.3', fc = 'yellow', alpha = 0.3),
                      arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
     plt.show()
 
@@ -175,8 +262,8 @@ def hierarchicalCluster(distance_mat):
         merged_id = cluster_record[pair[1]][0]
 
         for m in range(len(mat)):
-            mat[m][merged_id] = -1 * abs(mat[m][merged_id])#sys.float_info.max
-            mat[merged_id][m] = -1 * abs(mat[m][merged_id])#sys.float_info.max
+            mat[m][merged_id] = -1 * (mat[m][merged_id])#sys.float_info.max
+            mat[merged_id][m] = -1 * (mat[m][merged_id])#sys.float_info.max
 
         cluster_record[pair[1]] = []
 
@@ -203,10 +290,9 @@ def hierarchicalCluster(distance_mat):
     # print steps
 
 
-
 if __name__ == '__main__':
-    smiles, clusters, matrix = load_data('data/smiles_cluster_fingerprint.text')
-    print smiles
+    # smiles, clusters, matrix = load_data('data/smiles_cluster_fingerprint.text')
+    names, smiles, matrix = load_data_with_name('data/test_data_MDS_64_SMILES_fingerprint.text')
 
     matrix = np.array(matrix)
 
@@ -215,14 +301,24 @@ if __name__ == '__main__':
     matrix = matrix * weight
 
     dis_mat = distance_matrix(matrix, tanimoto_distance)
-    hierarchicalCluster(dis_mat)
 
-    # loc = mds(matrix, 1000, 0.002)
+        # print
+    # # hierarchicalCluster(dis_mat)
     #
-    # label = []
-    # i = 0
+    loc = mds_origin(matrix, 10000, 0.001)
+
+    label = []
+    i = 0
+    for c in names:
     # for c in clusters:
-    #     label.append(str(i) + ',' + c)
-    #     i += 1
-    #
-    # draw2d(loc, label)
+        label.append(str(i) ) #+ ',' + c)
+        i += 1
+
+    # fd = open("cluster_reslut.text", 'w')
+    # for i in range(len(names)):
+    #     line = str(i) + " " *(5 - len(str(i))) + names[i] + " " * (20 - len(names[i])) + smiles[i] + '\n'
+    #     fd.write(line)
+    # fd.close()
+
+
+    draw2d(loc, label)

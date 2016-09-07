@@ -28,6 +28,8 @@ def find_bmu(code_book, data_matrix):
         max_grid_id = 0
         for j in range(grid_num):
             similarity = dist.tanimoto_similarity(data_matrix[i], code_book[j])
+            # if i == 0:
+            #     print j, similarity
             if max_similarity < similarity:
                 max_similarity = similarity
                 max_grid_id = j

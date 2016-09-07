@@ -23,8 +23,7 @@ def tanimoto_similarity(vec1, vec2):
             comm_no_zero_num += vec1[i]
 
     return float(comm_no_zero_num)/(vec1_no_zero_num + vec2_no_zero_num - comm_no_zero_num)
-
-
+    # return vec2_no_zero_num
 def hamming_distance(vec1, vec2):
 
     d = 0
