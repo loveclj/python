@@ -14,32 +14,32 @@ import collections
 
 
 if __name__ == '__main__':
-    in_file_name = "bsom_sorted.text"
+    in_file_name = "/home/lizhifeng/cuda-workspace/Binary_SOM/t"
+    in_file_name = "/home/lizhifeng/cuda-workspace/MDS-2/2D.text"
+
     out_file_name = "one_structure_per_grid.js"
-    somx = 32
-    somy = 32
+    out_file_name = "0.7k_2D.js"
 
     count = collections.defaultdict(int)
     list = []
     for line in open(in_file_name):
-        label, grid = line.strip('\n').split(',')
+        label, x, y = line.strip('\n').split(',')
         # print grid
         dic = {}
         dic["name"] = label
         dic["type"] = "scatter"
 
-        grid = eval(grid)
-        x = grid%somx + random.random()*0.3 + 0.5
-        # x /= 10
-        y = grid/somx + random.random()*0.3 + 0.5
-        # y /= 10
-
-        count[grid] += 1
-
-        if count[grid] > 20:
-            print grid
-            continue
-
+        # x = eval(x) + random.random()*0.3 + 0.5
+        # # x /= 10
+        # y = eval(y) + random.random()*0.3 + 0.5
+        # # y /= 10
+        #
+        # coord = str(x) + "," + str(y)
+        # count[coord] += 1
+        #
+        # if count[coord] > 20:
+        #     print coord
+        #     continue
 
         data = [[x, y], ]
         dic["data"] = data

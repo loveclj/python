@@ -48,7 +48,8 @@ def draw2d(x_list, y_list, label):
 if __name__ == '__main__':
     # x_list, y_list = load_coords("/home/lizhifeng/git/glimmer/glimmer_cpu/glimmer/2D.text")
     # x_list, y_list = load_coords("/home/lizhifeng/cuda-workspace/MDS/2D.text")
-    label_list, x_list, y_list = load_coords("/home/lizhifeng/cuda-workspace/MDS-2/2D.text")
+    # label_list, x_list, y_list = load_coords("/home/lizhifeng/cuda-workspace/MDS-2/2D.text")
+    label_list, x_list, y_list = load_coords("/home/lizhifeng/cuda-workspace/Binary_SOM/t")
 
     # for i in range(len(x_list)):
     #     label.append(str(i))

@@ -24,6 +24,7 @@ def str2binary(s, binary_begin=32, binary_end=-7):
     binary = "".join(binary_list)[binary_begin: binary_end]
     return binary
 
+
 class Table(object):
 
     def __init__(self, table_name, partition_key):
@@ -53,9 +54,8 @@ def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, i
             continue
 
         segs = kv.split(' ')
-        # print segs
-        # break
-        name = segs[0]
+
+        name = " ".join(segs[0:-1])
         inchi_value = segs[-1]
 
         res = client.query(index_name=index_name, index=inchi_value)['Items']
@@ -89,4 +89,7 @@ def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, i
 if __name__ == '__main__':
     table = Table(table_name='chemical', partition_key='cid')
 
-    get_cid_smiles_fingerprint_from_dynamodb(file_name="name_inchi_150k.text", out_file_name='name_formula_fingerprint_150k.text', client=table, index_name='inchi_key')
+    get_cid_smiles_fingerprint_from_dynamodb(file_name="name_inchi_0.7k.text",
+                                             out_file_name='name_formula_fingerprint_0.7k.text',
+                                             client=table,
+                                             index_name='inchi_key')
