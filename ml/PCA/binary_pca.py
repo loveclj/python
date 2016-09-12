@@ -31,16 +31,18 @@ def load_matrix_from_file(filename, n, index=1):
 
 
 if __name__ == '__main__':
-    matrix = load_matrix_from_file('../../data/chemical_data.text', 10000000)
-    # matrix = load_matrix_from_file(filename='/home/lizhifeng/cuda-workspace/Binary_SOM/name_formula_fingerprint_3k.text',
-    #                                n=2000000, index=2)
+    # matrix = load_matrix_from_file('../../data/chemical_data.text', 1000)
+    matrix = load_matrix_from_file(filename='/home/lizhifeng/cuda-workspace/Binary_SOM/name_formula_fingerprint_3k.text',
+                                   n=881, index=2)
 
     # print matrix.astype('uint8').dtype
     # print matrix
 
-    # cv2.imshow('image', matrix.astype('uint8')*255)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow('image', matrix.astype('uint8')*255)
+    cv2.imwrite("random_choose_structure.jpg",  matrix.astype('uint8')*255)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 
     # np.linalg.eigvals(matrix.transpose().dot(matrix)).shape
     # print np.linalg.svd(matrix)
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     # print pca.components_.shape
     # print pca.noise_variance_
 
-    a =  matrix.sum(axis=0)
+    a = matrix.sum(axis=0)
     c = (a == 0)
     print c.sum()
     # print a.sum()

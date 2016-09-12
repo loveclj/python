@@ -48,6 +48,9 @@ class Table(object):
 def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, index_name):
     fd = open(out_file_name, 'w')
     fingerprint_set = set()
+    fp_name = {}
+
+    not_found_fd = open("not_found.text", 'w')
     for line in open(file_name):
         kv = line.strip('\n').strip('\r').strip('')
         if not kv:
@@ -62,6 +65,8 @@ def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, i
 
         if not res:
             print name, "not found"
+            line = name + '\n'
+            not_found_fd.write(line)
             continue
 
         cid = res[0]['cid']['N']
@@ -75,13 +80,26 @@ def get_cid_smiles_fingerprint_from_dynamodb(file_name, out_file_name, client, i
 
         if fingerprint in fingerprint_set:
             print "ignore", name
+            fp_name[fingerprint].append(name)
             continue
         else:
             fingerprint_set.add(fingerprint)
+            fp_name[fingerprint] = [name]
 
         line = name + ',' + formula + ',' + fingerprint + '\n'
-        print line
+        # print line
         fd.write(line)
+
+    same_fd = open('same_fingerprint.text', 'w')
+    for k, v in fp_name.items():
+        if len(v) < 2:
+            continue
+
+        for s in v:
+            same_fd.write(s + '\n')
+
+        same_fd.write("=========\n")
+
 
     fd.close()
 
