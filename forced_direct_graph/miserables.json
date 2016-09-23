@@ -1,0 +1,451 @@
+{
+    "nodes": [
+        {
+            "group": 1, 
+            "id": "SCHEMBL14933"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL30204"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL318020"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL456097"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL468791"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL474856"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL723130"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL2361724"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL3384608"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5535262"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5921139"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL8095196"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL8991350"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL11288633"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL15843486"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL20295"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL22948"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL22949"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL33936"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL35434"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL37746"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL54771"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL119088"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL119089"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL121072"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL121073"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL344659"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL344660"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL379166"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL713241"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL991772"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL1111038"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL1650224"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL2116443"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL2184511"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL2325590"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL2708038"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL3204478"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL3375469"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL3814479"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL4250511"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL4940393"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5053459"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5688745"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5712832"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL5961782"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL6386791"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL6545633"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL7199765"
+        }, 
+        {
+            "group": 1, 
+            "id": "SCHEMBL7201744"
+        }
+    ], 
+    "links": [
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL30204", 
+            "value": 0.1428571428571429
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL318020", 
+            "value": 0.06451612903225812
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL456097", 
+            "value": 0.20588235294117652
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL468791", 
+            "value": 0.17142857142857137
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL474856", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL723130", 
+            "value": 0.17647058823529416
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL2361724", 
+            "value": 0.15625
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL3384608", 
+            "value": 0.18181818181818177
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5535262", 
+            "value": 0.1470588235294118
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5921139", 
+            "value": 0.1470588235294118
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL8095196", 
+            "value": 0.1875
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL8991350", 
+            "value": 0.09999999999999998
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL11288633", 
+            "value": 0.19999999999999996
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL15843486", 
+            "value": 0.06666666666666665
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL20295", 
+            "value": 0.1515151515151515
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL22948", 
+            "value": 0.22580645161290325
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL22949", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL33936", 
+            "value": 0.09677419354838712
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL35434", 
+            "value": 0.20588235294117652
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL37746", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL54771", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL119088", 
+            "value": 0.09677419354838712
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL119089", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL121072", 
+            "value": 0.09677419354838712
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL121073", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL344659", 
+            "value": 0.09677419354838712
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL344660", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL379166", 
+            "value": 0.09375
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL713241", 
+            "value": 0.09677419354838712
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL991772", 
+            "value": 0.17647058823529416
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL1111038", 
+            "value": 0.21212121212121215
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL1650224", 
+            "value": 0.032258064516129004
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL2116443", 
+            "value": 0.12903225806451613
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL2184511", 
+            "value": 0.1875
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL2325590", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL2708038", 
+            "value": 0.16129032258064513
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL3204478", 
+            "value": 0.1470588235294118
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL3375469", 
+            "value": 0.032258064516129004
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL3814479", 
+            "value": 0.032258064516129004
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL4250511", 
+            "value": 0.1515151515151515
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL4940393", 
+            "value": 0.19354838709677424
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5053459", 
+            "value": 0.1875
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5688745", 
+            "value": 0.032258064516129004
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5712832", 
+            "value": 0.1875
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL5961782", 
+            "value": 0.032258064516129004
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL6386791", 
+            "value": 0.09375
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL6545633", 
+            "value": 0.17142857142857137
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL7199765", 
+            "value": 0.22580645161290325
+        }, 
+        {
+            "source": "SCHEMBL14933", 
+            "target": "SCHEMBL7201744", 
+            "value": 0.22580645161290325
+        }
+    ]
+}
