@@ -6,6 +6,7 @@ tmp
 log*
 data
 *.log
+*.js
 
 # binary file ignore
 *.o
