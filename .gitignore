@@ -33,4 +33,7 @@ conf/
 .idea/
 result
 
-
+# cache & bak
+*~
+*.tmp
+*.bak
